@@ -3,7 +3,7 @@ const path = require("path");
 require("dotenv").config()
 const {calculateTotalAmount}=require("../utils/totalamount")
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, process.env.GOOGLE_APPLICATION_CREDENTIALS),
+  keyFile: path.join( process.env.GOOGLE_APPLICATION_CREDENTIALS),
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const Router = express.Router();
-const saveToGoogleSheet=require("../utils/googlesheets")
+const sheetsUtil=require("../utils/googlesheets")
 const RegModel=require("../models/reg.model")
 const {calculateTotalAmount}=require("../utils/totalamount")
 Router.get("/payment", async(req, res) => {
@@ -35,7 +35,7 @@ Router.post("/payment/submit", async (req, res) => {
       { new: true }
     );
     const totalamount=calculateTotalAmount(regData)
-saveToGoogleSheet(regData.toObject()).catch(err =>
+sheetsUtil.saveToGoogleSheet(regData.toObject()).catch(err =>
   console.error("Sheet backup failed:", err)
 );
     if (!regData) {

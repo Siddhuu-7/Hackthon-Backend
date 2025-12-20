@@ -1,9 +1,9 @@
 const express = require("express");
 const checkDuplicates = require("../middelware/TeamVerfication.middelware");
 const RegModel = require("../models/reg.model");
-const requiredfields=require("../middelware/requiredFields.middelware")
+const requiredfields=require("../middelware/requiredFields.middelware");
+const { getMembers } = require("../utils/googlesheets");
 const Router = express.Router();
-const saveToGoogleSheet=require("../utils/googlesheets")
 Router.post(
   "/reg",
   requiredfields,
@@ -42,7 +42,7 @@ Router.post(
         price: m.isCsi ? 750 : 850,
       }));
 
-      
+      console.log(data)
       if (!data.teamcode) {
         data.teamcode = `TEAM-${Date.now()}`;
       }
@@ -59,7 +59,6 @@ Router.post(
       });
 
     } catch (error) {
-      // console.error("Registration error:", error);
 
       
       if (error.code === 11000) {
@@ -112,4 +111,52 @@ Router.get("/admin/teams",async(req,res)=>{
     res.status(504).json({msg:error})
   }
 })
+
+Router.get("/verify", async (req, res) => {
+  const { mobileNumber, email } = req.query;
+
+  try {
+    if (!mobileNumber && !email) {
+      return res.status(400).json({
+        found: false,
+        message: "mobileNumber or email is required",
+      });
+    }
+
+    const members = getMembers();
+
+    const member = members.find(m => {
+  const emailMatch =
+    email && m.email.toLowerCase() === email.toLowerCase();
+
+  const mobileMatch =
+    mobileNumber && m.mobile === mobileNumber;
+
+  return emailMatch || mobileMatch;
+});
+
+    if (!member) {
+      return res.status(200).json({
+        found: false,
+      });
+    }
+
+    return res.status(200).json({
+      found: true,
+      member: {
+        name: member.name,
+        email: member.email,
+        mobile: member.mobile,
+      },
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      found: false,
+      error: "Internal server error",
+    });
+  }
+});
+
 module.exports = Router;

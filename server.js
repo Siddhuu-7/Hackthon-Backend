@@ -14,7 +14,7 @@ app.set("views", "./views");
 app.use(express.urlencoded({ extended: true }));
 app.use("",paymentrouter)
 app.use(cors({
-  origin: "http://localhost:5173"
+  origin: "*"
 }));
 app.use("",RegRouter)
 mongoose.connect(process.env.MONGODB).then(()=>{

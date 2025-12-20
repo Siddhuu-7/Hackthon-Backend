@@ -6,6 +6,7 @@ const RegRouter=require("./routes/regestration.route")
 const PORT=process.env.PORT
 const mongoose=require("mongoose")
 const paymentrouter=require("./routes/payment.route")
+const sheetsUtil = require("./utils/googlesheets");
 app.use(express.json())
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -21,6 +22,9 @@ mongoose.connect(process.env.MONGODB).then(()=>{
 }).catch(err=>{
     console.log(err)
 })
+sheetsUtil.loadMembers()
+
 app.listen(PORT,()=>{
     console.log(`Server running at http://localhost:${PORT}`)
+   
 })

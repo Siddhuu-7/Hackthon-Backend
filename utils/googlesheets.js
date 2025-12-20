@@ -1,9 +1,11 @@
 const { google } = require("googleapis");
 const path = require("path");
 require("dotenv").config()
+const fs=require("fs")
 const {calculateTotalAmount}=require("../utils/totalamount")
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join( process.env.GOOGLE_APPLICATION_CREDENTIALS),
+  keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  keyFile: "./credentials.json",
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
@@ -58,7 +60,7 @@ async function saveToGoogleSheet(reg) {
     ]);
   }
 // const meta = await sheets.spreadsheets.get({
-//   spreadsheetId: SPREADSHEET_ID,
+//   spreadsheetId: ,
 // });
 
 // console.log(
@@ -76,4 +78,68 @@ async function saveToGoogleSheet(reg) {
   });
 }
 
-module.exports = saveToGoogleSheet;
+
+
+
+// async function loadSheet() {
+//   const meta = await sheets.spreadsheets.get({
+//     spreadsheetId:process.env.SPREADSHEET_ID_CSI_REGESTER,
+//   });
+
+//   const sheetNames = meta.data.sheets.map(
+//     s => s.properties.title
+//   );
+
+//   let all = [];
+
+//   for (const sheetName of sheetNames) {
+//     const res = await sheets.spreadsheets.values.get({
+//       spreadsheetId:process.env.SPREADSHEET_ID_CSI_REGESTER,
+//       range: `'${sheetName}'!A2:Z`, 
+//     });
+
+//     const rows = res.data.values || [];
+
+//     rows.forEach(row => {
+//       if (row[3] && row[4] && row[5]) {
+//         all.push({
+//           name: row[3].trim(),
+//           mobile: row[4].trim(),
+//           email: row[5].trim(),
+//         });
+//       }
+//     });
+//   }
+
+//   MEMBERS = all;s
+//   // console.table(MEMBERS)
+
+// }
+function findByEmail(email, members) {
+  return members.find(
+    m => m.email === email.toLowerCase()
+  );
+}
+
+
+let MEMBERS = [];
+
+function loadMembers() {
+  const FILE_PATH =
+    process.env.NODE_ENV === "production"
+      ? "/etc/secrets/members.json"        // Render secret file
+      : path.join(__dirname, "../members.json"); // local
+
+  const raw = fs.readFileSync(FILE_PATH, "utf8");
+  MEMBERS = JSON.parse(raw);
+
+  console.log("Members loaded:", MEMBERS.length);
+}
+
+function getMembers() {
+  return MEMBERS;
+}
+
+
+
+module.exports = {saveToGoogleSheet ,findByEmail,loadMembers,getMembers};

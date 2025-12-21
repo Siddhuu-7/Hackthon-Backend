@@ -70,7 +70,7 @@ Router.post(
 
       return res.status(500).json({
         success: false,
-        msg: "Internal server error",
+        msg:error,
       });
     }
   }

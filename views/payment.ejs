@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment - <%= teamName %></title>
+
+  <link rel="stylesheet" href="/payment.css" />
+
+  <style>
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Hackathon Payment</h2>
+
+    <!-- TEAM INFO -->
+    <div class="info-section">
+      <div class="info-row">
+        <span class="info-label">Team Name:</span>
+        <span class="info-value"><%= teamName %></span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Team Code:</span>
+        <span class="info-value"><%= teamcode %></span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Team Lead:</span>
+        <span class="info-value"><%= leadName %></span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Amount:</span>
+        <span class="info-value amount">₹<%= amount %></span>
+      </div>
+    </div>
+
+    <!-- QR -->
+    <div class="qr-section">
+      <p>Scan QR Code to Pay</p>
+      <div class="qr-code">
+        <img src="/qr.png" alt="Payment QR Code" />
+      </div>
+    </div>
+
+    <!-- PAYMENT FORM (UNCHANGED ACTION) -->
+    <form method="POST" action="/payment/submit" id="paymentForm">
+      <input type="hidden" name="teamcode" value="<%= teamcode %>" />
+      <input type="hidden" name="teamName" value="<%= teamName %>" />
+
+      <div class="form-group">
+        <label for="transactionId">Transaction ID / Reference Number</label>
+        <input
+          type="text"
+          id="transactionId"
+          name="transactionId"
+          placeholder="Enter transaction ID"
+          required
+        />
+      </div>
+
+      <button type="submit" id="submitBtn">
+        Submit Payment Proof
+      </button>
+    </form>
+
+    <p class="note">Please ensure you've completed the payment before submitting</p>
+    <p id="statusMsg" class="status"></p>
+  </div>
+
+  <!-- ✅ SCRIPT (ADDED, NOTHING REMOVED) -->
+  <script>
+    const form = document.getElementById("paymentForm");
+    const btn = document.getElementById("submitBtn");
+    const statusMsg = document.getElementById("statusMsg");
+
+    form.addEventListener("submit", () => {
+      const transactionId = document.getElementById("transactionId").value;
+
+      // UI loading
+      btn.disabled = true;
+      btn.innerText = "Verifying & Sending Email...";
+      form.classList.add("loading");
+
+      statusMsg.innerText = "Please wait, confirming payment...";
+      statusMsg.className = "status";
+
+      // 🔥 Call admin verify API (parallel, no block)
+      fetch("/admin/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          teamcode: "<%= teamcode %>",
+          transactionId
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          statusMsg.innerText = "✅ Payment submitted & confirmation email sent!";
+          statusMsg.classList.add("success");
+        } else {
+          throw new Error();
+        }
+      })
+      .catch(() => {
+        statusMsg.innerText =
+          "⚠️ Payment submitted, but email failed. Admin will verify manually.";
+        statusMsg.classList.add("error");
+        btn.disabled = false;
+        btn.innerText = "Submit Payment Proof";
+        form.classList.remove("loading");
+      });
+      // ⛔ DO NOT prevent default
+      // /payment/submit will continue normally
+    });
+  </script>
+</body>
+</html>

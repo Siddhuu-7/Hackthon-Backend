@@ -8,6 +8,7 @@ function buildSampleData(team) {
   return {
     teamName: team.teamName,
     teamLeadName: team.teamLead.name,
+    teamcode:team.teamcode,
     teamMembers: team.teamMembers.map(m => m.name),
     registrationFee: team.teamLead.price,
     eventName: "Udbhav-2k26",
@@ -21,23 +22,23 @@ Router.post("/verify", async (req, res) => {
   try {
     const { teamcode, transactionId } = req.body;
 
-    if (!teamcode || !transactionId) {
+    if (!teamcode ) {
       return res.status(400).json({ error: "Missing data" });
     }
 
-    // ✅ fetch team from DB
+    
     const team = await RegModel.findOne({ teamcode });
 
     if (!team) {
       return res.status(404).json({ error: "Team not found" });
     }
 
-    // ✅ update payment details
-    team.transactionId = transactionId;
+    
+    // team.transactionId = transactionId;
     team.paymentStatus = "DONE";
     await team.save();
 
-    // ✅ send email
+    
     const emailData = buildSampleData(team);
     await sendMail(team.teamLead.email, emailData);
 

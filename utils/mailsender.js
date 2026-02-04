@@ -14,6 +14,7 @@ const sendEmail = async (to, registrationData) => {
     const {
       teamName,
       teamLeadName,
+      teamcode,
       teamMembers = [], // Array of member names
       registrationFee = 500,
       eventName = "Quiz Rooms Event",
@@ -68,6 +69,10 @@ const sendEmail = async (to, registrationData) => {
                                 <tr>
                                     <td style="color: #1565c0; font-size: 14px; font-weight: 600;">Team Name:</td>
                                     <td align="right" style="color: #0d47a1; font-size: 14px; font-weight: bold;">${teamName}</td>
+                                </tr>
+                                 <tr>
+                                    <td style="color: #1565c0; font-size: 14px; font-weight: 600;">Team Code:</td>
+                                    <td align="right" style="color: #0d47a1; font-size: 14px; font-weight: bold;">${teamcode}</td>
                                 </tr>
                                 <tr>
                                     <td style="color: #1565c0; font-size: 14px; font-weight: 600;">Team Lead:</td>

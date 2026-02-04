@@ -56,9 +56,20 @@
     <!-- QR -->
     <div class="qr-section">
       <p>Scan QR Code to Pay</p>
-      <div class="qr-code">
-        <img src="/qr.png" alt="Payment QR Code" />
-      </div>
+     <div class="qr-code">
+  <% let qrImage = "/qr.png"; %>
+
+  <% if (amount == 2400) { %>
+    <% qrImage = "/qr_2400.png"; %>
+  <% } else if (amount == 3000) { %>
+    <% qrImage = "/qr_3000.png"; %>
+  <% } else if (amount == 3600) { %>
+    <% qrImage = "/qr_3600.png"; %>
+  <% } %>
+
+  <img src="<%= qrImage %>" alt="Payment QR Code" />
+</div>
+
     </div>
 
     <!-- PAYMENT FORM (UNCHANGED ACTION) -->

@@ -3,12 +3,15 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (to, registrationData) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "Csibodyevents@gmail.com",   
-        pass: "hsykfkyjhkpzboca",          
-      },
-    });
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: "Csibodyevents@gmail.com",
+    pass: "hsykfkyjhkpzboca",
+  },
+});
+
 
     // Extract data from the registrationData object
     const {

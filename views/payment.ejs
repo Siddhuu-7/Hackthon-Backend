@@ -23,6 +23,38 @@
     .error {
       color: red;
     }
+    .upi-help {
+      background: #f0f7ff;
+      border: 1px solid #b3d9ff;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    .upi-help h4 {
+      margin: 0 0 10px 0;
+      color: #0066cc;
+      font-size: 14px;
+    }
+    .upi-help p {
+      margin: 5px 0;
+      font-size: 13px;
+      color: #333;
+    }
+    .upi-help .example {
+      background: white;
+      padding: 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+      font-family: monospace;
+      color: #d63384;
+      font-weight: 600;
+    }
+    .upi-help-image {
+      max-width: 100%;
+      margin-top: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
   </style>
 </head>
 
@@ -72,18 +104,33 @@
 
     </div>
 
-    <!-- PAYMENT FORM (UNCHANGED ACTION) -->
+   
+    <div class="upi-help">
+      <h4>📱 Where to find your UPI Reference Number / UTR?</h4>
+      <p>After completing the payment, you'll receive a confirmation with a <strong>UPI Reference Number (UTR)</strong>.</p>
+      <p><strong>Example formats:</strong></p>
+      <div class="example">402356789012 or 240235678901</div>
+      
+   
+      
+      <p style="margin-top: 10px;">💡 You can find it in:</p>
+      <p>• Your UPI app's transaction history</p>
+      <p>• SMS confirmation from your bank</p>
+      <p>• Payment success screen</p>
+    </div>
+
+  
     <form method="POST" action="/payment/submit" id="paymentForm">
       <input type="hidden" name="teamcode" value="<%= teamcode %>" />
       <input type="hidden" name="teamName" value="<%= teamName %>" />
 
       <div class="form-group">
-        <label for="transactionId">Transaction ID / Reference Number</label>
+        <label for="transactionId">UPI Reference Number / UTR *</label>
         <input
           type="text"
           id="transactionId"
           name="transactionId"
-          placeholder="Enter transaction ID"
+          placeholder="e.g., 402356789012 or 240235678901"
           required
         />
       </div>
@@ -97,7 +144,6 @@
     <p id="statusMsg" class="status"></p>
   </div>
 
-  <!-- ✅ SCRIPT (ADDED, NOTHING REMOVED) -->
   <script>
     const form = document.getElementById("paymentForm");
     const btn = document.getElementById("submitBtn");
@@ -106,7 +152,6 @@
     form.addEventListener("submit", () => {
       const transactionId = document.getElementById("transactionId").value;
 
-      // UI loading
       btn.disabled = true;
       btn.innerText = "Verifying & Sending Email...";
       form.classList.add("loading");
@@ -114,7 +159,6 @@
       statusMsg.innerText = "Please wait, confirming payment...";
       statusMsg.className = "status";
 
-      // 🔥 Call admin verify API (parallel, no block)
       fetch("/admin/verify", {
         method: "POST",
         headers: {

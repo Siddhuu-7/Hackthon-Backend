@@ -4,7 +4,10 @@ require("dotenv").config()
 const fs=require("fs")
 const {calculateTotalAmount}=require("../utils/totalamount")
 const auth = new google.auth.GoogleAuth({
-  keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  keyFile: 
+  process.env.NODE_ENV === "production"
+      ? "/etc/secrets/credentials.json"        
+      : path.join(__dirname, "../credentials.json"),
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
@@ -129,7 +132,7 @@ function loadMembers() {
   const FILE_PATH =
     process.env.NODE_ENV === "production"
       ? "/etc/secrets/members.json"        
-      : path.join(__dirname, "../members.json"); // local
+      : path.join(__dirname, "../members.json"); 
 
   const raw = fs.readFileSync(FILE_PATH, "utf8");
   MEMBERS = JSON.parse(raw);

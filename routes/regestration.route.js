@@ -46,8 +46,16 @@ Router.post(
       if (!data.teamcode) {
         data.teamcode = `TEAM-${Date.now()}`;
       }
+      let existname = await RegModel.findOne({ teamName: data.teamName });
 
-      const registration = await RegModel.create(data);
+if (existname) {
+  const randomNum = Math.floor(100 + Math.random() * 900);
+  data.teamName = `${data.teamName}${randomNum}`;
+}
+
+const registration = await RegModel.create(data);
+
+     
 
       return res.status(201).json({
         success: true,

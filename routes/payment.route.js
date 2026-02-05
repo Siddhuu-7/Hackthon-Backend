@@ -47,10 +47,10 @@ sheetsUtil.saveToGoogleSheet(regData.toObject()).catch(err =>
     teamcode: `${regData.teamcode}`,
     transactionId: `${regData.transactionId}`,
     amount: totalamount,
-    coordinatorName1 :"Vijay",
-    coordinatorPhone1:"92877890",
-    coordinatorName2 :"vijay2",
-    coordinatorPhone2:"43678748"
+    coordinatorName1 :"Shaik Mahammad Rafi",
+    coordinatorPhone1:"+91 6281552485",
+    coordinatorName2 :"Kambala Charan Teja ",
+    coordinatorPhone2:"+91 8465833353"
   });
   } catch (error) {
     console.error(error);

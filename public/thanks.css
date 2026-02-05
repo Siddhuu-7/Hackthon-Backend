@@ -169,3 +169,23 @@
       color: #777;
       font-size: 13px;
     }
+    .download-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.download-btn {
+  display: inline-block;
+  background: #14b8a6;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  background: #0d9488;
+  transform: translateY(-2px);
+}

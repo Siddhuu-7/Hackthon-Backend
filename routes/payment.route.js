@@ -2,6 +2,7 @@ const express = require("express");
 const Router = express.Router();
 const sheetsUtil=require("../utils/googlesheets")
 const RegModel=require("../models/reg.model")
+const generatePaymentPDF = require("../utils/generatePdf"); // NEW
 const {calculateTotalAmount}=require("../utils/totalamount")
 Router.get("/payment", async(req, res) => {
 
@@ -56,6 +57,33 @@ sheetsUtil.saveToGoogleSheet(regData.toObject()).catch(err =>
     console.error(error);
     res.status(500).send("Server error");
   }
+});
+Router.get("/payment/pdf/:teamcode", async (req, res) => {
+  const regData = await RegModel.findOne({
+    teamcode: req.params.teamcode,
+  });
+
+  const totalamount = calculateTotalAmount(regData);
+
+  const pdfData = {
+    teamName: regData.teamName,
+    teamcode: regData.teamcode,
+    transactionId: regData.transactionId,
+    amount: totalamount,
+    coordinatorName1: "Shaik Mahammad Rafi",
+    coordinatorPhone1: "+91 6281552485",
+    coordinatorName2: "Kambala Charan Teja",
+    coordinatorPhone2: "+91 8465833353",
+  };
+
+  const pdfBuffer = await generatePaymentPDF(pdfData);
+
+  res.set({
+    "Content-Type": "application/pdf",
+    "Content-Disposition": `attachment; filename=receipt-${regData.teamcode}.pdf`,
+  });
+
+  res.send(pdfBuffer);
 });
 
 module.exports=Router

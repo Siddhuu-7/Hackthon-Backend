@@ -19,7 +19,8 @@
     "express": "^5.2.1",
     "googleapis": "^169.0.0",
     "mongoose": "^9.0.2",
-    "nodemailer": "^8.0.0"
+    "nodemailer": "^8.0.0",
+    "puppeteer": "^24.37.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

@@ -5,6 +5,7 @@ const path = require("path");
 async function generatePaymentPDF(data) {
   const browser = await puppeteer.launch({
     headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   const page = await browser.newPage();

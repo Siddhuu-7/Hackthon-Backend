@@ -7,10 +7,17 @@ const teamMemberSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    gender:{
-      type:String,
-      required:[true,"Team lead gender is required"],
-      enum:["Male","Female"]
+    
+   gender: {
+  type: String,
+  enum: ["Male", "Female", ""],
+  default: "",
+},
+
+    regnum:{
+      type: String,
+      required: true,
+      trim: true,
     },
     email: {
       type: String,
@@ -59,11 +66,17 @@ const teamLeadSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    gender:{
-      type:String,
-      required:true,
-      enum:["Male","Female"]
+    regnum:{
+      type: String,
+      required: true,
+      trim: true,
     },
+    gender: {
+  type: String,
+  enum: ["Male", "Female", ""],
+  default: "",
+},
+
     email: {
       type: String,
       required: true,

@@ -1,24 +1,13 @@
-const nodemailer = require("nodemailer");
+const axios = require("axios");
+require("dotenv").config();
 
 const sendEmail = async (to, registrationData) => {
   try {
-    const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: "Csibodyevents@gmail.com",
-    pass: "hsykfkyjhkpzboca",
-  },
-});
-
-
-    // Extract data from the registrationData object
     const {
       teamName,
       teamLeadName,
       teamcode,
-      teamMembers = [], // Array of member names
+      teamMembers = [],
       registrationFee = 500,
       eventName = "Quiz Rooms Event",
       eventDate,
@@ -26,10 +15,10 @@ const sendEmail = async (to, registrationData) => {
       eventVenue
     } = registrationData;
 
-    const totalMembers = teamMembers.length + 1; // +1 for team lead
+    const totalMembers = teamMembers.length + 1;
     const totalAmount = totalMembers * registrationFee;
 
-    const html = `
+      const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -233,26 +222,35 @@ const sendEmail = async (to, registrationData) => {
 </html>
 `;
 
-    const mailOptions = {
-      from: "Udbhav-2k26 <Csibodyevents@gmail.com>",
-      to,
-      subject: `Registration Confirmation - ${eventName}`,
-      html, 
-    };
+    await axios.post(
+  "https://send.api.mailtrap.io/api/send",
+  {
+    from: {
+      email: "no-reply@udbhav2k26.com",
+      name: "Udbhav-2k26"
+    },
+    to: [
+      { email: to }
+    ],
+    subject: `Registration Confirmation - ${eventName}`,
+    html: html
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.MAILTRAP_API_TOKEN}`,
+      "Content-Type": "application/json"
+    }
+  }
+);
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", info.response);
-    return { success: true, messageId: info.messageId };
+
+    console.log("✅ Email sent successfully via Brevo API");
+    return { success: true };
+
   } catch (err) {
-    console.error("Email error:", err);
+    console.error("❌ Email error:", err.response?.data || err.message);
     return { success: false, error: err.message };
   }
 };
-
-
-
-
-
-
 
 module.exports = sendEmail;

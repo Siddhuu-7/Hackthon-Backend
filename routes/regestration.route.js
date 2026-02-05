@@ -34,15 +34,15 @@ Router.post(
 
       
       data.teamLead.isCsi = Boolean(data.teamLead.isCsi);
-      data.teamLead.price = data.teamLead.isCsi ? 600 : 600;
+      data.teamLead.price = data.teamLead.isCsi ? 800 : 800;
 
       data.teamMembers = data.teamMembers.map(m => ({
         ...m,
         isCsi: Boolean(m.isCsi),
-        price: m.isCsi ? 600 : 600,
+        price: m.isCsi ? 800 : 800,
       }));
 
-      console.log(data)
+      // console.log(data)
       if (!data.teamcode) {
         data.teamcode = `TEAM-${Date.now()}`;
       }
@@ -65,7 +65,6 @@ Router.post(
           msg: "Team name already exists So Change Your Team Name and Submit",
         });
       }
-      
       return res.status(500).json({
         success: false,
         msg: error,

@@ -16,6 +16,7 @@ module.exports = function checkRequiredFields(req, res, next) {
 
     const leadRequiredFields = [
       "name",
+      "regnum",
       "email",
       "mobile",
       "department",
@@ -42,6 +43,7 @@ module.exports = function checkRequiredFields(req, res, next) {
 
       const memberRequiredFields = [
         "name",
+        "regnum",
         "email",
         "mobile",
         "department",

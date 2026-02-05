@@ -5,7 +5,6 @@ const fs=require("fs")
 const {calculateTotalAmount}=require("../utils/totalamount")
 const auth = new google.auth.GoogleAuth({
   keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  keyFile: "./credentials.json",
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
@@ -34,7 +33,8 @@ async function saveToGoogleSheet(reg) {
     reg.teamLead.price,          //  Amount
     totalamount,
     reg.transactionId,          //trasaction
-    reg.teamcode
+    reg.teamcode,
+    reg.teamLead.regnum
   ]);
 
   
@@ -56,7 +56,8 @@ async function saveToGoogleSheet(reg) {
       member.price          ,        //Amount
       totalamount,              // totalAmount
     reg.transactionId,          //transactionId
-    reg.teamcode              //Team code
+    reg.teamcode             , //Team code
+      member.regnum
     ]);
   }
 // const meta = await sheets.spreadsheets.get({

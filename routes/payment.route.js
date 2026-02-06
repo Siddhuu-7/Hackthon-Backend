@@ -54,7 +54,7 @@ sheetsUtil.saveToGoogleSheet(regData.toObject()).catch(err =>
     coordinatorPhone2:"+91 8465833353"
   });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).send("Server error");
   }
 });
@@ -85,5 +85,41 @@ Router.get("/payment/pdf/:teamcode", async (req, res) => {
 
   res.send(pdfBuffer);
 });
-
+Router.post("/payment/paid",async(req,res)=>{
+  try {
+    const{teamName}=req.body;
+    const regData = await RegModel.findOneAndUpdate(
+      { teamName }, 
+      {
+        $set: {
+          
+          paymentStatus: "PAID"
+        }
+      },
+      { new: true }
+    );
+    return res.status(200).json({msg:"done"})
+  } catch (error) {
+        res.status(500).send("Server error");
+        console.log(error)
+  }
+})
+Router.post("/payment/failed",async(req,res)=>{
+  try {
+    const{teamName}=req.body;
+    const regData = await RegModel.findOneAndUpdate(
+      { teamName }, 
+      {
+        $set: {
+          
+          paymentStatus: "FAILED"
+        }
+      },
+      { new: true }
+    );
+    return res.status(200).json({msg:"done"})
+  } catch (error) {
+        res.status(500).send("Server error");
+  }
+})
 module.exports=Router

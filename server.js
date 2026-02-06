@@ -8,15 +8,16 @@ const mongoose=require("mongoose")
 const paymentrouter=require("./routes/payment.route")
 const sheetsUtil = require("./utils/googlesheets");
 const adminroute=require("./routes/admin.route")
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json())
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", "./views");
 app.use(express.urlencoded({ extended: true }));
 app.use("",paymentrouter)
-app.use(cors({
-  origin: "*"
-}));
+
 app.use("",RegRouter)
 app.use("/admin",adminroute)
 mongoose.connect(process.env.MONGODB).then(()=>{

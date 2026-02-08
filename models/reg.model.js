@@ -167,7 +167,10 @@ paymentStatus: {
   enum: ["PENDING", "DONE", "FAILED","PAID"],
   default: "PENDING",
 },
-
+  problemstatment:{
+    type:[String],
+    default:[]
+  },
   },
   { timestamps: true }
 );

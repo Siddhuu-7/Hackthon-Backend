@@ -163,5 +163,45 @@ Router.get("/verify", async (req, res) => {
     });
   }
 });
+Router.get("/get-team-details/:teamcode",async(req,res)=>{
+  try {
+    const {teamcode}=req.params
+    const data=await RegModel.findOne({teamcode,
+      paymentStatus:"PAID"
+    },
+      
+  {
+    teamName: 1,
+    teamcode: 1,
+    "teamLead.name": 1,
+    "teamMembers.name": 1,
+    problemstatment:1,
+    _id: 0
+  }
+    )
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
+Router.post("/ideasubmission", async (req, res) => {
+  try {
+    const { teamcode, statement } = req.body;
+
+    const updatedData = await RegModel.findOneAndUpdate(
+      { teamcode },
+      { $push: { problemstatment: statement } },
+      { new: true } 
+    );
+
+    res.status(200).json({
+      msg: updatedData.problemstatment
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = Router;

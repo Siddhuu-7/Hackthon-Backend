@@ -121,14 +121,14 @@ const registrationSchema = new mongoose.Schema(
   {
     teamcode:{
       default:null,
-      // unique:true,
+      unique:true,
       type:String
     },
     teamName: {
       type: String,
       required: true,
       trim: true,
-      unique: true,
+      // unique: true,
     },
 
     collegeType: {

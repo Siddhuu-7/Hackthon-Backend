@@ -4,6 +4,7 @@ const RegModel = require("../models/reg.model");
 const requiredfields=require("../middelware/requiredFields.middelware");
 const { getMembers } = require("../utils/googlesheets");
 const Router = express.Router();
+const fileController=require("../middelware/fileController")
 Router.post(
   "/reg",
   requiredfields,
@@ -47,16 +48,11 @@ Router.post(
         data.teamcode = `TEAM-${Date.now()}`;
       }
       let existname = await RegModel.findOne({ teamName: data.teamName });
-
 if (existname) {
   const randomNum = Math.floor(100 + Math.random() * 900);
   data.teamName = `${data.teamName}${randomNum}`;
 }
-
 const registration = await RegModel.create(data);
-
-     
-
       return res.status(201).json({
         success: true,
         msg: "Team registered successfully",
@@ -203,5 +199,5 @@ Router.post("/ideasubmission", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
+Router.get("/download-ppt",fileController)
 module.exports = Router;

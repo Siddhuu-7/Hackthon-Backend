@@ -178,6 +178,7 @@ Router.get("/get-team-details/:teamcode",async(req,res)=>{
     teamName: 1,
     teamcode: 1,
     "teamLead.name": 1,
+    "teamLead.price":1,
     "teamMembers.name": 1,
     problemstatment:1,
     _id: 0
@@ -208,4 +209,5 @@ Router.post("/ideasubmission", async (req, res) => {
   }
 });
 Router.get("/download-ppt",fileController)
+Router.get("/securelink")
 module.exports = Router;

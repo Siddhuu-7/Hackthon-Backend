@@ -230,7 +230,7 @@ const len = lengths[Math.floor(Math.random() * lengths.length)];
     //     maxAge: 60 * 60 * 1000
     // });
 
-    res.redirect(`http://localhost:5173/admin?adminCode=${code}`);
+    res.redirect(`https://srkrcsi.in/admin?adminCode=${code}`);
 });
 
 

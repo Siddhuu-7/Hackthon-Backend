@@ -8,12 +8,14 @@ const mongoose=require("mongoose")
 const paymentrouter=require("./routes/payment.route")
 const sheetsUtil = require("./utils/googlesheets");
 const adminroute=require("./routes/admin.route")
+// const cookieParser = require("cookie-parser");
 app.use(cors({
   origin: "*"
 }));
 app.use(express.json())
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+// app.use(cookieParser());
 app.set("views", "./views");
 app.use(express.urlencoded({ extended: true }));
 app.use("",paymentrouter)

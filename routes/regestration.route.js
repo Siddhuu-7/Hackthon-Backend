@@ -5,6 +5,8 @@ const requiredfields=require("../middelware/requiredFields.middelware");
 const { getMembers } = require("../utils/googlesheets");
 const Router = express.Router();
 const fileController=require("../middelware/fileController")
+const {generateCode} =require("../utils/teamcodeGenarator")
+const validAdminKeys = [];
 Router.post(
   "/reg",
   requiredfields,
@@ -103,6 +105,10 @@ Router.post("/payment-verfiaction",async(req,res)=>{
 
 Router.get("/admin/teams",async(req,res)=>{
   try {
+    const {adminCode}=req.query
+    if (!adminCode || !validAdminKeys.includes(adminCode)) {
+      return res.status(403).json({ msg: "Invalid or missing admin code" });
+    }
     const teams=await RegModel.find({},{
       _id:0,
       teamName:1,
@@ -210,4 +216,22 @@ Router.post("/ideasubmission", async (req, res) => {
   }
 });
 Router.get("/download-ppt",fileController)
+Router.get("/create-admin", (req, res) => {
+const lengths = [8, 16, 32];
+const len = lengths[Math.floor(Math.random() * lengths.length)];
+    const code = generateCode(len);
+
+    validAdminKeys.push(code);
+
+    // res.cookie("adminKey", code, {
+    //     httpOnly: true,
+    //     secure: false, 
+    //     sameSite: "lax",
+    //     maxAge: 60 * 60 * 1000
+    // });
+
+    res.redirect(`http://localhost:5173/admin?adminCode=${code}`);
+});
+
+
 module.exports = Router;

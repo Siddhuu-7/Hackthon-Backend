@@ -89,8 +89,6 @@ Router.get("/check-team-name", async (req, res) => {
   teamName:name
  
 });
-
-
   res.json({
     available: !exists
   });
@@ -101,10 +99,18 @@ Router.post("/payment-verfiaction",async(req,res)=>{
   } catch (error) {
     res.status(504).json({msg:error})
   }
-})
+});
+
 Router.get("/admin/teams",async(req,res)=>{
   try {
-    const teams=await RegModel.find();
+    const teams=await RegModel.find({},{
+      _id:0,
+      teamName:1,
+      "teamLead.name":1,
+      "teamLead.mobile":1,
+      "teamMembers":1,
+      "transactionId":1,
+    });
     if(!teams){
       return res.status(404).json({msg:"No New Regestrations"})
     }

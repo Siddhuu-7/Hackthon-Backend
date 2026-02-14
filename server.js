@@ -10,7 +10,7 @@ const sheetsUtil = require("./utils/googlesheets");
 const adminroute=require("./routes/admin.route")
 // const cookieParser = require("cookie-parser");
 app.use(cors({
-  origin: "https://srkrcsi.in/"
+  origin: "*"
 }));
 app.use(express.json())
 app.use(express.static("public"));

@@ -209,5 +209,4 @@ Router.post("/ideasubmission", async (req, res) => {
   }
 });
 Router.get("/download-ppt",fileController)
-Router.get("/securelink")
 module.exports = Router;

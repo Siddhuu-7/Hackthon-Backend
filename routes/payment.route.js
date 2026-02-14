@@ -4,6 +4,10 @@ const sheetsUtil=require("../utils/googlesheets")
 const RegModel=require("../models/reg.model")
 const generatePaymentPDF = require("../utils/generatePdf"); // NEW
 const {calculateTotalAmount}=require("../utils/totalamount")
+const axios=require("axios")
+const {StandardCheckoutClient,Env,StandardCheckoutPayRequest}=require("pg-sdk-node")
+const {randomUUId}=require("crypto");
+require("dotenv").config()
 Router.get("/payment", async(req, res) => {
 
 const {teamName}=req.query
@@ -122,4 +126,35 @@ Router.post("/payment/failed",async(req,res)=>{
         res.status(500).send("Server error");
   }
 })
+
+
+
+// const clientId=process.env.CLIENT_ID
+// const clientSecret=process.env.CLIENT_SECRECT
+// const clientVersion=1
+// const env=Env.SANDBOX
+// const client=StandardCheckoutClient.getInstance(clientId,clientSecret,clientVersion,env)
+
+// Router.post("/phonepe",async(req,res)=>{
+// try {
+//   const {amount}=req.body
+//   if(!amount){
+//     return res.status(400).send("amount is required")
+//   }
+//   const merchantorderId=randomUUId()
+//   const redirectUrl=`http://localhost:6961/check-status?merchantorderId=${merchantorderId}`
+//   const request=StandardCheckoutPayRequest.builder().merchantOrderId(merchantorderId).amount(amount)
+//   .redirectUrl(redirectUrl).build()
+//   const response=await client.pay(request)
+//   return res.json({
+//     checkoutPageUrl:response.redirectUrl
+//   })
+// } catch (error) {
+//   console.log(error)
+// }
+// })
+// Router.get("check-status",async(req,res)=>{
+//   const {merchantorderId}=req.query
+//   res.send("check "+merchantorderId)
+// })
 module.exports=Router

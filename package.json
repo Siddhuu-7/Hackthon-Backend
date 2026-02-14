@@ -21,6 +21,7 @@
     "googleapis": "^169.0.0",
     "mongoose": "^9.0.2",
     "nodemailer": "^8.0.0",
+    "pg-sdk-node": "https://phonepe.mycloudrepo.io/public/repositories/phonepe-pg-sdk-node/releases/v2/phonepe-pg-sdk-node-2.0.3.tgz",
     "puppeteer": "^24.37.1"
   },
   "devDependencies": {

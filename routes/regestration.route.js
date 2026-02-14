@@ -110,6 +110,7 @@ Router.get("/admin/teams",async(req,res)=>{
       "teamLead.mobile":1,
       "teamMembers":1,
       "transactionId":1,
+      paymentStatus:1
     });
     if(!teams){
       return res.status(404).json({msg:"No New Regestrations"})

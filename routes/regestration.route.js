@@ -108,6 +108,7 @@ Router.get("/admin/teams",async(req,res)=>{
       teamName:1,
       "teamLead.name":1,
       "teamLead.mobile":1,
+      "teamLead.price":1,
       "teamMembers":1,
       "transactionId":1,
       paymentStatus:1

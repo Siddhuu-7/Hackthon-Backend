@@ -86,10 +86,10 @@ Router.get("/check-team-name", async (req, res) => {
   }
 
  const exists = await RegModel.findOne({
-  // teamName: { $regex: `^${name}$`, $options: "i" },
-  teamName:name
- 
+  teamName: { $regex: `^${name}$`, $options: "i" },
+  paymentStatus: { $in: ["PENDING", "FAILED"] }
 });
+
   res.json({
     available: !exists
   });

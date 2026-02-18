@@ -31,6 +31,7 @@ async function saveToGoogleSheetSingle(member) {
     member.price,          //  Amount
     totalamount,
     member.transactionId,          //trasaction
+    member.regnum
   ]);
 
   

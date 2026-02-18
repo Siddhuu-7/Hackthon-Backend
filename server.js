@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("",paymentrouter)
 
 app.use("",RegRouter)
-app.use("/admin",adminroute)
+app.use("",adminroute)
 mongoose.connect(process.env.MONGODB).then(()=>{
     console.log("Data Base Connected")
 }).catch(err=>{

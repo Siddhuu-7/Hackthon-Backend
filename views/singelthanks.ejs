@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful</title>
+  
+  
+</head>
+<link rel="stylesheet" href="/thanks.css">
+<body>
+  <div class="container">
+    <div class="success-icon">
+      <div class="checkmark"></div>
+    </div>
+
+    <h1>Payment Successful!</h1>
+    
+    <p class="message">
+      Thank you for registering for our Hackathon! Your payment has been received and is currently being verified.
+    </p>
+
+    <div class="info-box">
+      <div class="info-row">
+        <span class="info-label"> Name:</span>
+        <span class="info-value"><%= name %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Transaction ID:</span>
+        <span class="info-value"><%= transactionId %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Amount Paid:</span>
+        <span class="info-value">₹<%= amount %></span>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p>
+        <strong>Important:</strong> You will receive a confirmation email once your payment has been verified. 
+        This typically takes a few hours. Please check your registered email for updates.
+      </p>
+    </div>
+
+    <div class="next-steps">
+      <h3>Need Help?</h3>
+      <p style="color: #555; margin-bottom: 15px;">If you have any questions or face any issues, feel free to contact our coordinators:</p>
+      
+      <div style="background: white; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0; margin-bottom: 10px;">
+        <p style="color: #2c3e50; font-weight: 600; margin-bottom: 5px;"><%= coordinatorName1 %></p>
+        <p style="color: #666; font-size: 14px; margin-bottom: 8px;">
+          📱 <a href="tel:<%= coordinatorPhone1 %>" style="color: #2c3e50; text-decoration: none;"><%= coordinatorPhone1 %></a>
+        </p>
+        <a href="https://wa.me/<%= coordinatorPhone1 %>" style="display: inline-block; background: #25D366; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
+          💬 WhatsApp
+        </a>
+      </div>
+
+      <div style="background: white; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0;">
+        <p style="color: #2c3e50; font-weight: 600; margin-bottom: 5px;"><%= coordinatorName2 %></p>
+        <p style="color: #666; font-size: 14px; margin-bottom: 8px;">
+          📱 <a href="tel:<%= coordinatorPhone2 %>" style="color: #2c3e50; text-decoration: none;"><%= coordinatorPhone2 %></a>
+        </p>
+        <a href="https://wa.me/<%= coordinatorPhone2 %>" style="display: inline-block; background: #25D366; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
+          💬 WhatsApp
+        </a>
+      </div>
+    </div>
+
+
+    <p class="footer-note">
+      Thank you for participating in our Hackathon. We look forward to seeing your innovative ideas!
+    </p>
+    <div class="download-section">
+ 
+</div>
+
+  </div>
+</body>
+</html>

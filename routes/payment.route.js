@@ -7,6 +7,8 @@ const {calculateTotalAmount}=require("../utils/totalamount")
 const axios=require("axios")
 const {StandardCheckoutClient,Env,StandardCheckoutPayRequest}=require("pg-sdk-node")
 const {randomUUId}=require("crypto");
+const singleregModel = require("../models/singlereg.model");
+const { runtimeconfig_v1beta1 } = require("googleapis");
 require("dotenv").config()
 Router.get("/payment", async(req, res) => {
 
@@ -92,6 +94,10 @@ Router.get("/payment/pdf/:teamcode", async (req, res) => {
 Router.post("/payment/paid",async(req,res)=>{
   try {
     const{teamName}=req.body;
+    const {adminCode}=req.query
+    if (adminCode!==process.env.ADMIN_CODE) {
+      return res.status(403).json({ msg: "Invalid or missing admin code" });
+    }
     const regData = await RegModel.findOneAndUpdate(
       { teamName }, 
       {
@@ -110,6 +116,10 @@ Router.post("/payment/paid",async(req,res)=>{
 })
 Router.post("/payment/failed",async(req,res)=>{
   try {
+    const {adminCode}=req.query
+    if (adminCode!==process.env.ADMIN_CODE) {
+      return res.status(403).json({ msg: "Invalid or missing admin code" });
+    }
     const{teamName}=req.body;
     const regData = await RegModel.findOneAndUpdate(
       { teamName }, 
@@ -157,4 +167,67 @@ Router.post("/payment/failed",async(req,res)=>{
 //   const {merchantorderId}=req.query
 //   res.send("check "+merchantorderId)
 // })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Router.get("/singel/payment", async(req, res) => {
+
+const {name}=req.query
+
+const member=await singleregModel.findOne({name:name})
+
+  res.render("singelpayment", {
+    name: `${member.name}`,
+    amount: `${member.price}`
+  });
+});
+Router.post("/singel/payment/submit", async (req, res) => {
+  try {
+    
+    const { name, transactionId } = req.body;
+    if (!transactionId) {
+      return res.status(400).send("Transaction ID required");
+    }
+
+    const regData = await singleregModel.findOneAndUpdate(
+      { name }, 
+      {
+        $set: {
+          transactionId,
+          paymentStatus: "DONE"
+        }
+      },
+      { new: true }
+    );
+   
+
+    if (!regData) {
+      return res.status(404).send("name not found");
+    }
+
+    res.render("singelthanks", {
+    name: `${regData.name}`,
+    transactionId: `${regData.transactionId}`,
+    amount: regData.price,
+    coordinatorName1 :"Shaik Mahammad Rafi",
+    coordinatorPhone1:"+91 6281552485",
+    coordinatorName2 :"Kambala Charan Teja ",
+    coordinatorPhone2:"+91 8465833353"
+  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+});
 module.exports=Router

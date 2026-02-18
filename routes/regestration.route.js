@@ -6,6 +6,7 @@ const { getMembers } = require("../utils/googlesheets");
 const Router = express.Router();
 const fileController=require("../middelware/fileController")
 const {generateCode} =require("../utils/teamcodeGenarator")
+const singleregModel = require("../models/singlereg.model");
 Router.post(
   "/reg",
   requiredfields,
@@ -94,13 +95,7 @@ Router.get("/check-team-name", async (req, res) => {
     available: !exists
   });
 });
-Router.post("/payment-verfiaction",async(req,res)=>{
-  try {
-    
-  } catch (error) {
-    res.status(504).json({msg:error})
-  }
-});
+
 
 Router.get("/admin/teams",async(req,res)=>{
   try {
@@ -215,6 +210,27 @@ Router.post("/ideasubmission", async (req, res) => {
   }
 });
 Router.get("/download-ppt",fileController)
+Router.post("/single/reg",async(req,res)=>{
+      try {
+      const data = req.body;
 
+const registration = await singleregModel.create(data);
+      return res.status(201).json({
+        success: true,
+        msg: " registered successfully",
+        data: {
+          id: registration._id,
+          teamcode: registration.teamcode,
+        },
+      });
+    }
+    catch (error) {
+      return res.status(500).json({
+        success: false,
+        msg: error,
+      });
+    }
+  
+  })
 
 module.exports = Router;

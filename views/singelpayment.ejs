@@ -143,33 +143,33 @@
       statusMsg.innerText = "Please wait, confirming payment...";
       statusMsg.className = "status";
 
-      fetch("/admin/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          teamcode: "<%= name %>",
-          transactionId
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          statusMsg.innerText = "✅ Payment submitted & confirmation email sent!";
-          statusMsg.classList.add("success");
-        } else {
-          throw new Error();
-        }
-      })
-      .catch(() => {
-        statusMsg.innerText =
-          "⚠️ Payment submitted, but email failed. Admin will verify manually.";
-        statusMsg.classList.add("error");
-        btn.disabled = false;
-        btn.innerText = "Submit Payment Proof";
-        form.classList.remove("loading");
-      });
+      // fetch("/admin/verify", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify({
+      //     teamcode: "<%= name %>",
+      //     transactionId
+      //   })
+      // })
+      // .then(res => res.json())
+      // .then(data => {
+      //   if (data.success) {
+      //     statusMsg.innerText = "✅ Payment submitted & confirmation email sent!";
+      //     statusMsg.classList.add("success");
+      //   } else {
+      //     throw new Error();
+      //   }
+      // })
+      // .catch(() => {
+      //   statusMsg.innerText =
+      //     "⚠️ Payment submitted, but email failed. Admin will verify manually.";
+      //   statusMsg.classList.add("error");
+      //   btn.disabled = false;
+      //   btn.innerText = "Submit Payment Proof";
+      //   form.classList.remove("loading");
+      // });
       
     });
   </script>

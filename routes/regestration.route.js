@@ -214,35 +214,30 @@ Router.get("/download-ppt",fileController)
 Router.post("/single/reg", async (req, res) => {
   try {
     const data = { ...req.body };
-
-    if (!data.transactionId || data.transactionId === "") {
+    if (!data.transactionId || data.transactionId.trim() === "") {
       delete data.transactionId;
     }
-
     const registration = await singleregModel.create(data);
-
     return res.status(201).json({
       success: true,
       msg: "Registered successfully",
-      data: {
-        id: registration._id,
-      },
+      data: { id: registration._id }
     });
 
   } catch (error) {
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,
-        msg: "Duplicate transaction ID",
+        msg: "Transaction already used."
       });
     }
-
     return res.status(500).json({
       success: false,
-      msg: error.message,
+      msg: error.message
     });
   }
 });
+
 
 
 module.exports = Router;

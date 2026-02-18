@@ -211,28 +211,39 @@ Router.post("/ideasubmission", async (req, res) => {
   }
 });
 Router.get("/download-ppt",fileController)
-Router.post("/single/reg",async(req,res)=>{
-      try {
-      const data = req.body;
+Router.post("/single/reg", async (req, res) => {
+  try {
+    const data = { ...req.body };
 
-const registration = await singleregModel.create(data);
-console.log(data)
-      return res.status(201).json({
-        success: true,
-        msg: " registered successfully",
-        data: {
-          id: registration._id,
-          teamcode: registration.teamcode,
-        },
-      });
+    // ✅ Remove empty transactionId
+    if (!data.transactionId || data.transactionId === "") {
+      delete data.transactionId;
     }
-    catch (error) {
-      return res.status(500).json({
+
+    const registration = await singleregModel.create(data);
+
+    return res.status(201).json({
+      success: true,
+      msg: "Registered successfully",
+      data: {
+        id: registration._id,
+      },
+    });
+
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
         success: false,
-        msg: error,
+        msg: "Duplicate transaction ID",
       });
     }
-  
-  })
+
+    return res.status(500).json({
+      success: false,
+      msg: error.message,
+    });
+  }
+});
+
 
 module.exports = Router;

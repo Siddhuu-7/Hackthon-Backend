@@ -56,8 +56,12 @@ const Singelreg = new mongoose.Schema(
       default: "800",
     },
     transactionId: {
-      type: String,
-    },
+  type: String,
+  unique: true,
+  sparse: true,
+  default: undefined,
+},
+
     paymentStatus: {
   type: String,
   enum: ["PENDING", "DONE", "FAILED","PAID"],

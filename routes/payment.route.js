@@ -1,6 +1,7 @@
 const express = require("express");
 const Router = express.Router();
 const sheetsUtil=require("../utils/googlesheets")
+const sheetsUtilSingle=require("../utils/single.sheets")
 const RegModel=require("../models/reg.model")
 const generatePaymentPDF = require("../utils/generatePdf"); // NEW
 const {calculateTotalAmount}=require("../utils/totalamount")
@@ -186,11 +187,15 @@ Router.get("/singel/payment", async(req, res) => {
 const {name}=req.query
 
 const member=await singleregModel.findOne({name:name})
-
-  res.render("singelpayment", {
+try {
+   res.render("singelpayment", {
     name: `${member.name}`,
     amount: `${member.price}`
   });
+} catch (error) {
+  console.log(error)
+}
+ 
 });
 Router.post("/singel/payment/submit", async (req, res) => {
   try {
@@ -211,7 +216,9 @@ Router.post("/singel/payment/submit", async (req, res) => {
       { new: true }
     );
    
-
+sheetsUtilSingle.saveToGoogleSheetSingle(regData.toObject()).catch(err =>
+  console.error("Sheet backup failed:", err)
+);
     if (!regData) {
       return res.status(404).send("name not found");
     }

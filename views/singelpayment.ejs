@@ -82,16 +82,7 @@
     <div class="qr-section">
       <p>Scan QR Code to Pay</p>
      <div class="qr-code">
-  <% let qrImage = "/qr.png"; %>
-
-  <% if (amount == 3200) { %>
-    <% qrImage = "/qr_3200.png"; %>
-  <% } else if (amount == 4000) { %>
-    <% qrImage = "/qr_4000.png"; %>
-  <% } else if (amount == 4800) { %>
-    <% qrImage = "/qr_4800.png"; %>
-  <% } %>
-
+  <% let qrImage = "/qr_800.png"; %>
   <img src="<%= qrImage %>" alt="Payment QR Code" />
 </div>
 
@@ -113,7 +104,7 @@
     </div>
 
   
-    <form method="POST" action="https://hackthon-backend-1-d2zj.onrender.com/singel/payment/submit" id="paymentForm">
+    <form method="POST" action="http://localhost:6961/singel/payment/submit" id="paymentForm">
       <input type="hidden" name="name" value="<%= name %>" />
      
 

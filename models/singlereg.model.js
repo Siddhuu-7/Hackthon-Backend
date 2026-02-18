@@ -56,10 +56,10 @@ const Singelreg = new mongoose.Schema(
       default: "800",
     },
     transactionId: {
-  type: String,
-  unique: true,
-  sparse: true,
-  default: undefined,
+  
+   type: String,
+  default: null,       
+  trim: true,
 },
 
     paymentStatus: {

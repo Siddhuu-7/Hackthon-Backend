@@ -215,7 +215,6 @@ Router.post("/single/reg", async (req, res) => {
   try {
     const data = { ...req.body };
 
-    // ✅ Remove empty transactionId
     if (!data.transactionId || data.transactionId === "") {
       delete data.transactionId;
     }

@@ -7,6 +7,7 @@ const Router = express.Router();
 const fileController=require("../middelware/fileController")
 const {generateCode} =require("../utils/teamcodeGenarator")
 const singleregModel = require("../models/singlereg.model");
+const { dataflow_v1b3 } = require("googleapis");
 Router.post(
   "/reg",
   requiredfields,
@@ -215,6 +216,7 @@ Router.post("/single/reg",async(req,res)=>{
       const data = req.body;
 
 const registration = await singleregModel.create(data);
+console.log(data)
       return res.status(201).json({
         success: true,
         msg: " registered successfully",

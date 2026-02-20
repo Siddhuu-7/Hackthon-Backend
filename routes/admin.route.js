@@ -186,4 +186,31 @@ Router.delete("/admin/deletePending/singel",async(req,res)=>{
     res.status(500).json({ error: error.message });
   }
 })
+Router.get("/admin/Teamdata",async(req,res)=>{
+  try {
+    const {adminCode}=req.query
+    if (adminCode!==process.env.ADMIN_CODE) {
+      return res.status(403).json({ msg: "Invalid or missing admin code" });
+    }
+const data = await RegModel.find({paymentStatus:"PAID"}, {
+  _id: 1,
+  teamName: 1,
+  "teamLead.name": 1,
+  "teamLead.mobile": 1,
+  "teamMembers.name": 1,      
+  paymentStatus: 1,
+  problemstatment: 1
+}); 
+      if(!data){
+      return res.status(404).json({msg:"No New Regestrations"})
+    }
+     const updatedData = data.map(team => ({
+      ...team.toObject(),
+      amount: team.teamMembers.length * 800
+    }));
+    res.status(200).json(updatedData)
+  } catch (error) {
+    res.status(504).json({msg:error})
+  }
+})
 module.exports = Router;

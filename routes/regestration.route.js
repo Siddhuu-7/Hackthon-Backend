@@ -105,7 +105,7 @@ Router.get("/admin/teams",async(req,res)=>{
       return res.status(403).json({ msg: "Invalid or missing admin code" });
     }
     const teams=await RegModel.find({},{
-      _id:0,
+      _id:1,
       teamName:1,
       "teamLead.name":1,
       "teamLead.mobile":1,

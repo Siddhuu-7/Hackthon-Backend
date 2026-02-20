@@ -118,6 +118,72 @@ Router.post("/admin/payment/failed",async(req,res)=>{
         res.status(500).send("Server error");
   }
 })
+const mongoose = require("mongoose");
 
+Router.delete("/admin/deletePending/team", async (req, res) => {
+  try {
+    const { _id, adminCode } = req.query;
 
+    if (!adminCode) {
+      return res.status(403).json({ msg: "Unauthorized" });
+    }
+
+    if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(400).json({
+        msg: "Invalid or missing team id"
+      });
+    }
+
+    const deletedTeam = await RegModel.findOneAndDelete({
+      _id,
+      paymentStatus: "PENDING"
+    });
+
+    if (!deletedTeam) {
+      return res.status(404).json({
+        msg: "Team not found or already paid"
+      });
+    }
+
+    res.status(200).json({
+      msg: "Pending team deleted successfully"
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+Router.delete("/admin/deletePending/singel",async(req,res)=>{
+ try {
+    const { _id, adminCode } = req.query;
+
+    if (!adminCode) {
+      return res.status(403).json({ msg: "Unauthorized" });
+    }
+
+    if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(400).json({
+        msg: "Invalid or missing team id"
+      });
+    }
+
+    const deletedTeam = await singleregModel.findOneAndDelete({
+      _id,
+      paymentStatus: "PENDING"
+    });
+
+    if (!deletedTeam) {
+      return res.status(404).json({
+        msg: "Team not found or already paid"
+      });
+    }
+
+    res.status(200).json({
+      msg: "Pending team deleted successfully"
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
 module.exports = Router;

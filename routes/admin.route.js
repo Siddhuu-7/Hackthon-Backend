@@ -199,14 +199,15 @@ const data = await RegModel.find({paymentStatus:"PAID"}, {
   "teamLead.mobile": 1,
   "teamMembers.name": 1,      
   paymentStatus: 1,
-  problemstatment: 1
+  problemstatment: 1,
+  ppt:1
 }); 
       if(!data){
       return res.status(404).json({msg:"No New Regestrations"})
     }
      const updatedData = data.map(team => ({
       ...team.toObject(),
-      amount: team.teamMembers.length * 800
+      amount: team.teamMembers.length * 800+800
     }));
     res.status(200).json(updatedData)
   } catch (error) {

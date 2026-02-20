@@ -171,6 +171,10 @@ paymentStatus: {
     type:[String],
     default:[]
   },
+  ppt:{
+    type:String,
+    defualt:null
+  }
   },
   { timestamps: true }
 );

@@ -237,7 +237,9 @@ Router.post("/single/reg", async (req, res) => {
     });
   }
 });
-
+Router.post("/ppt-submission",async(req,res)=>{
+  
+})
 
 
 module.exports = Router;

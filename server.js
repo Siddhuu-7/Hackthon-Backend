@@ -9,6 +9,7 @@ const paymentrouter=require("./routes/payment.route")
 const sheetsUtil = require("./utils/googlesheets");
 const adminroute=require("./routes/admin.route")
 // const cookieParser = require("cookie-parser");
+const auth=require("./auth/folder.auth")
 app.use(cors({
   origin: "*"
 }));
@@ -22,6 +23,7 @@ app.use("",paymentrouter)
 
 app.use("",RegRouter)
 app.use("",adminroute)
+app.use("",auth)
 mongoose.connect(process.env.MONGODB).then(()=>{
     console.log("Data Base Connected")
 }).catch(err=>{

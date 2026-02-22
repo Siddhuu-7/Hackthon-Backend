@@ -1,6 +1,5 @@
 const express = require("express");
 const RegModel = require("../models/reg.model");
-const sendMail = require("../utils/mailsender");
 const singleregModel = require("../models/singlereg.model");
 
 const Router = express.Router();
@@ -41,7 +40,6 @@ Router.post("/verify", async (req, res) => {
 
     
     const emailData = buildSampleData(team);
-    await sendMail(team.teamLead.email, emailData);
 
     res.json({ success: true });
   } catch (error) {

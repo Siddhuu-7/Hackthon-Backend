@@ -7,7 +7,12 @@ const Router = express.Router();
 const fileController=require("../middelware/fileController")
 const {generateCode} =require("../utils/teamcodeGenarator")
 const singleregModel = require("../models/singlereg.model");
-const { dataflow_v1b3 } = require("googleapis");
+
+// const imagekit = new ImageKit({
+//     publicKey: process.env.PUBLICKEY,
+//     privateKey: process.env.PRAVITEKEY,
+//     urlEndpoint: process.env.URLENDPOINT
+//   });
 Router.post(
   "/reg",
   requiredfields,
@@ -237,9 +242,57 @@ Router.post("/single/reg", async (req, res) => {
     });
   }
 });
-Router.post("/ppt-submission",async(req,res)=>{
-  
+Router.post("/ppt", async (req, res) => {
+
+  try {
+
+    const { teamcode, pptlink } = req.body;
+    const updatedTeam = await RegModel.findOneAndUpdate(
+      { teamcode: teamcode },
+      {
+        $set: {
+          ppt: pptlink
+        }
+      },
+      {
+        new: true   
+      }
+    );
+    if (!updatedTeam) {
+      return res.status(404).json({
+        msg: "Invalid Team Code",
+        sub: "failed"
+      });
+    }
+
+    res.status(200).json({
+      msg: "PPT Submitted Successfully",
+      pptlink: updatedTeam.ppt,
+      sub: "success"
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      msg: "Server Error",
+      error: err.message
+    });
+
+  }
+
+});
+Router.get("/ppt/getLink",async(req,res)=>{
+  try {
+    const {teamcode}=req.query
+      const ppt =await RegModel.findOne({teamcode},{ppt:1})
+      if(!ppt){
+        return res.status(404).json({msg:"no PPt Found"})
+      }
+      return res.status(200).json(
+        ppt
+      )
+  } catch (error) {
+    res.status(500).json(error)
+  }
 })
-
-
 module.exports = Router;

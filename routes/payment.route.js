@@ -3,13 +3,8 @@ const Router = express.Router();
 const sheetsUtil=require("../utils/googlesheets")
 const sheetsUtilSingle=require("../utils/single.sheets")
 const RegModel=require("../models/reg.model")
-const generatePaymentPDF = require("../utils/generatePdf"); // NEW
 const {calculateTotalAmount}=require("../utils/totalamount")
-const axios=require("axios")
-const {StandardCheckoutClient,Env,StandardCheckoutPayRequest}=require("pg-sdk-node")
-const {randomUUId}=require("crypto");
 const singleregModel = require("../models/singlereg.model");
-const { runtimeconfig_v1beta1 } = require("googleapis");
 require("dotenv").config()
 Router.get("/payment", async(req, res) => {
 
@@ -65,33 +60,7 @@ sheetsUtil.saveToGoogleSheet(regData.toObject()).catch(err =>
     res.status(500).send("Server error");
   }
 });
-Router.get("/payment/pdf/:teamcode", async (req, res) => {
-  const regData = await RegModel.findOne({
-    teamcode: req.params.teamcode,
-  });
 
-  const totalamount = calculateTotalAmount(regData);
-
-  const pdfData = {
-    teamName: regData.teamName,
-    teamcode: regData.teamcode,
-    transactionId: regData.transactionId,
-    amount: totalamount,
-    coordinatorName1: "Shaik Mahammad Rafi",
-    coordinatorPhone1: "+91 6281552485",
-    coordinatorName2: "Kambala Charan Teja",
-    coordinatorPhone2: "+91 8465833353",
-  };
-
-  const pdfBuffer = await generatePaymentPDF(pdfData);
-
-  res.set({
-    "Content-Type": "application/pdf",
-    "Content-Disposition": `attachment; filename=receipt-${regData.teamcode}.pdf`,
-  });
-
-  res.send(pdfBuffer);
-});
 Router.post("/payment/paid",async(req,res)=>{
   try {
     const{teamName}=req.body;
@@ -137,45 +106,6 @@ Router.post("/payment/failed",async(req,res)=>{
         res.status(500).send("Server error");
   }
 })
-
-
-
-// const clientId=process.env.CLIENT_ID
-// const clientSecret=process.env.CLIENT_SECRECT
-// const clientVersion=1
-// const env=Env.SANDBOX
-// const client=StandardCheckoutClient.getInstance(clientId,clientSecret,clientVersion,env)
-
-// Router.post("/phonepe",async(req,res)=>{
-// try {
-//   const {amount}=req.body
-//   if(!amount){
-//     return res.status(400).send("amount is required")
-//   }
-//   const merchantorderId=randomUUId()
-//   const redirectUrl=`http://localhost:6961/check-status?merchantorderId=${merchantorderId}`
-//   const request=StandardCheckoutPayRequest.builder().merchantOrderId(merchantorderId).amount(amount)
-//   .redirectUrl(redirectUrl).build()
-//   const response=await client.pay(request)
-//   return res.json({
-//     checkoutPageUrl:response.redirectUrl
-//   })
-// } catch (error) {
-//   console.log(error)
-// }
-// })
-// Router.get("check-status",async(req,res)=>{
-//   const {merchantorderId}=req.query
-//   res.send("check "+merchantorderId)
-// })
-
-
-
-
-
-
-
-
 
 
 

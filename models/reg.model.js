@@ -181,7 +181,11 @@ paymentStatus: {
       type:Number,
       unique:true
     },
-    task:[String]
+    task:[String],
+    comment:{
+      type:String,
+      default:null
+    }
   }],
   defualt:null
   },

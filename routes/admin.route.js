@@ -220,7 +220,7 @@ Router.post("/submit-remark", async (req, res) => {
       return res.status(403).json({ msg: "Invalid or missing admin code" });
     }
 
-    const { teamcode, round, task } = req.body;
+    const { teamcode, round, task,comment } = req.body;
 
     if (!teamcode) {
       return res.status(400).json({ msg: "Team code not found" });
@@ -233,6 +233,7 @@ Router.post("/submit-remark", async (req, res) => {
           remarks: {
             round,
             task, 
+            comment
           },
         },
       },

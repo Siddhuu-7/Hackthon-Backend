@@ -188,6 +188,7 @@ Router.get("/get-team-details/:teamcode",async(req,res)=>{
     "teamLead.price":1,
     "teamMembers.name": 1,
     problemstatment:1,
+    remarks:1,
     _id: 0
   }
     )

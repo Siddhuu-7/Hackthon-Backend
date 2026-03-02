@@ -174,7 +174,18 @@ paymentStatus: {
   ppt:{
     type:String,
     defualt:null
-  }
+  },
+  remarks:{
+    type:[{
+    round:{
+      type:Number,
+      unique:true
+    },
+    task:[String]
+  }],
+  defualt:null
+  },
+  
   },
   { timestamps: true }
 );

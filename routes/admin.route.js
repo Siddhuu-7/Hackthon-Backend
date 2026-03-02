@@ -212,4 +212,57 @@ const data = await RegModel.find({paymentStatus:"PAID"}, {
     res.status(504).json({msg:error})
   }
 })
+Router.post("/submit-remark", async (req, res) => {
+  try {
+    const { adminCode } = req.query;
+
+    if (adminCode !== process.env.ADMIN_CODE) {
+      return res.status(403).json({ msg: "Invalid or missing admin code" });
+    }
+
+    const { teamcode, round, task } = req.body;
+
+    if (!teamcode) {
+      return res.status(400).json({ msg: "Team code not found" });
+    }
+
+    const updatedTeam = await RegModel.findOneAndUpdate(
+      { teamcode },
+      {
+        $push: {
+          remarks: {
+            round,
+            task, 
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedTeam) {
+      return res.status(404).json({ msg: "Team not found" });
+    }
+
+    res.status(200).json({
+      msg: "Remark added successfully",
+      data: updatedTeam,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error", error: error.message });
+  }
+});
+Router.get("/get-tasks",async(req,res)=>{
+  try {
+    const {teamcode}=req.query
+    const remark=await RegModel.findOne({teamcode},{
+      remarks:1
+    })
+    if(!remark){
+      return res.status(400).json({msg:"NO Remarks Still Added"})
+    }
+    res.status(200).json(remark)
+  } catch (error) {
+   res.status(504).json({msg:error})
+  }
+})
 module.exports = Router;
